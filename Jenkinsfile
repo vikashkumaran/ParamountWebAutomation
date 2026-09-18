@@ -13,12 +13,18 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat 'npm ci'
-                bat 'npx playwright install --with-deps'
+                bat 'npx playwright install chromium'
             }
         }
         stage('Run Playwright Tests') {
             steps {
                 bat 'npx playwright test'
+            }
+        }
+        stage('Package Report') {
+            steps {
+                // Compress full report folder to keep styles and assets intact
+                powershell 'Compress-Archive -Path playwright-report\\* -DestinationPath playwright-report.zip -Force'
             }
         }
     }
@@ -31,16 +37,16 @@ pipeline {
             emailext (
                 to: 'vikashkumaran.t@gmail.com',
                 subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                body: "The Playwright test execution completed successfully. The report is attached to this email.\n\nView build details: ${env.BUILD_URL}",
-                attachmentsPattern: 'playwright-report/index.html'
+                body: "The Playwright test execution completed successfully. The complete report is attached as a ZIP file.\n\nView build details: ${env.BUILD_URL}",
+                attachmentsPattern: 'playwright-report.zip'
             )
         }
         failure {
             emailext (
                 to: 'vikashkumaran.t@gmail.com',
                 subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                body: "The Playwright test execution failed. The report is attached to this email.\n\nView build details: ${env.BUILD_URL}",
-                attachmentsPattern: 'playwright-report/index.html'
+                body: "The Playwright test execution failed. The complete report is attached as a ZIP file.\n\nView build details: ${env.BUILD_URL}",
+                attachmentsPattern: 'playwright-report.zip'
             )
         }
     }
