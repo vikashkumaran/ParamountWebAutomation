@@ -36,16 +36,18 @@ pipeline {
         success {
             emailext (
                 to: 'vikashkumaran.t@gmail.com',
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                 subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                body: "The Playwright test execution completed successfully. The complete report is attached as a ZIP file.\n\nView build details: ${env.BUILD_URL}",
+                body: "The Playwright test execution completed successfully. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
             )
         }
         failure {
             emailext (
                 to: 'vikashkumaran.t@gmail.com',
+                recipientProviders: [[$class: 'DevelopersRecipientProvider'], [$class: 'RequesterRecipientProvider']],
                 subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                body: "The Playwright test execution failed. The complete report is attached as a ZIP file.\n\nView build details: ${env.BUILD_URL}",
+                body: "The Playwright test execution failed. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
             )
         }
