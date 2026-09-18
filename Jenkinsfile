@@ -34,9 +34,7 @@ pipeline {
         }
         success {
             emailext (
-                to: 'vikashkumaran.t@gmail.com',
-                replyTo: 'vikashkumaran.t@gmail.com',
-                from: 'vikashkumaran.t@gmail.com',
+                to: 'vikashkumaran87@gmail.com',
                 subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
                 body: "The Playwright test execution completed successfully. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
@@ -44,9 +42,7 @@ pipeline {
         }
         failure {
             emailext (
-                to: 'vikashkumaran.t@gmail.com',
-                replyTo: 'vikashkumaran.t@gmail.com',
-                from: 'vikashkumaran.t@gmail.com',
+                to: 'vikashkumaran87@gmail.com',
                 subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
                 body: "The Playwright test execution failed. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
