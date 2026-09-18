@@ -33,38 +33,24 @@ pipeline {
             archiveArtifacts artifacts: 'playwright-report/**/*', allowEmptyArchive: true
         }
         success {
-            withCredentials([string(credentialsId: 'gmail-app-password', variable: 'SMTP_PASSWORD')]) {
-                emailext (
-                    to: 'vikashkumaran.t@gmail.com',
-                    replyTo: 'vikashkumaran.t@gmail.com',
-                    subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                    body: "The Playwright test execution completed successfully. View details at: ${env.BUILD_URL}",
-                    attachmentsPattern: 'playwright-report.zip',
-                    mimeType: 'text/html',
-                    
-                    // Explicit Job-Level Overrides:
-                    overrideBuildSender: true,
-                    from: 'vikashkumaran.t@gmail.com',
-                    replyTo: 'vikashkumaran.t@gmail.com'
-                )
-            }
+            emailext (
+                to: 'vikashkumaran.t@gmail.com',
+                replyTo: 'vikashkumaran.t@gmail.com',
+                from: 'vikashkumaran.t@gmail.com',
+                subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
+                body: "The Playwright test execution completed successfully. View details at: ${env.BUILD_URL}",
+                attachmentsPattern: 'playwright-report.zip'
+            )
         }
         failure {
-            withCredentials([string(credentialsId: 'gmail-app-password', variable: 'SMTP_PASSWORD')]) {
-                emailext (
-                    to: 'vikashkumaran.t@gmail.com',
-                    replyTo: 'vikashkumaran.t@gmail.com',
-                    subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
-                    body: "The Playwright test execution failed. View details at: ${env.BUILD_URL}",
-                    attachmentsPattern: 'playwright-report.zip',
-                    mimeType: 'text/html',
-                    
-                    // Explicit Job-Level Overrides:
-                    overrideBuildSender: true,
-                    from: 'vikashkumaran.t@gmail.com',
-                    replyTo: 'vikashkumaran.t@gmail.com'
-                )
-            }
+            emailext (
+                to: 'vikashkumaran.t@gmail.com',
+                replyTo: 'vikashkumaran.t@gmail.com',
+                from: 'vikashkumaran.t@gmail.com',
+                subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
+                body: "The Playwright test execution failed. View details at: ${env.BUILD_URL}",
+                attachmentsPattern: 'playwright-report.zip'
+            )
         }
     }
 }
