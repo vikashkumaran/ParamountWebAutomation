@@ -35,7 +35,7 @@ pipeline {
         success {
             emailext (
                 to: 'vikashkumaran87@gmail.com',
-                recipientProviders: [[$class: 'ListRecipientProvider']],
+                recipientProviders: [developers(), culprits()],
                 subject: "SUCCESS: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
                 body: "The Playwright test execution completed successfully. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
@@ -44,7 +44,7 @@ pipeline {
         failure {
             emailext (
                 to: 'vikashkumaran87@gmail.com',
-                recipientProviders: [[$class: 'ListRecipientProvider']],
+                recipientProviders: [developers(), culprits()],
                 subject: "FAILURE: Jenkins Job ${env.JOB_NAME} [Build #${env.BUILD_NUMBER}]",
                 body: "The Playwright test execution failed. View details at: ${env.BUILD_URL}",
                 attachmentsPattern: 'playwright-report.zip'
